@@ -48,13 +48,7 @@ end
 function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
     % 全ての座標の1列目と2列目を入れ替える
     subpixelRedCoordinates = subpixelRedCoordinates(:, [2, 1]);
-    
-    % 配列のサイズが少なくとも3行あることを確認
-    if size(subpixelRedCoordinates, 1) < 3
-        warning('subpixelRedCoordinates の行数が少なすぎます。処理をスキップします。');
-        return;
-    end
-    
+    %     
     % 行の入れ替え
     if flag
         if size(subpixelRedCoordinates, 1) >= 3
@@ -66,12 +60,17 @@ function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
         numPoints = size(subpixelRedCoordinates, 1);
         
         % 最後の2つの赤点を3番目と4番目に移動
-        for i = 1:2
-            lastIdx = numPoints - (i - 1);
-            targetIdx = 3 + (i - 1);
-            % 赤点を挿入し、それ以降の点を2つずつずらす
-            subpixelRedCoordinates(targetIdx+2:numPoints, :) = subpixelRedCoordinates(targetIdx:numPoints-2, :);
-            subpixelRedCoordinates(targetIdx, :) = subpixelRedCoordinates(lastIdx, :);
+        if numPoints >= 4
+            % 最後の2つの点を取得
+            lastPoint1 = subpixelRedCoordinates(end, :);
+            lastPoint2 = subpixelRedCoordinates(end-1, :);
+
+            % 移動する部分をスライド
+            subpixelRedCoordinates(5:end, :) = subpixelRedCoordinates(3:end-2, :);
+
+            % 3番目と4番目に移動
+            subpixelRedCoordinates(3, :) = lastPoint2;
+            subpixelRedCoordinates(4, :) = lastPoint1;
         end
     end
 end
