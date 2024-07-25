@@ -1,6 +1,6 @@
 clc; close all; imtool close all; clear;
 
-result_Dir = 'C:\Users\SISLa\MATLAB\Projects\afin_All\出力結果\ten';
+result_Dir = 'C:\Users\SISLa\MATLAB\Projects\afin_All_1time\出力結果\ten';
 
 % 初期設定
 xlens = 328;
@@ -37,7 +37,7 @@ mp = [818.000000000000	1029
 4258	6995];
 1
 % transformation_matrix関数を呼び出し
-[registered] = transformation_matrix(result_Dir, J2, imds, plot_statas, mp);
+[registered] = transformation_matrix(result_Dir, J2, imds, plot_statas, mp, true);
 2
 % [mp, fp] = cpselect(registered, ten, 'Wait', true);
 mp2 = [1065	1338
@@ -57,6 +57,10 @@ ten_Multipul(mp2, result_Dir,IMG ,xlens, ylens, magnification,pix, pix2, y_axis,
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~再度抽出，５点目以降を修正
 % load_photo関数を呼び出し
 [imds, ten, plot_statas] = load_photo(result_Dir, xlens, ylens, magnification, false); %任意のplotした点のten画像の読み込み
+4
+[registered] = transformation_matrix(result_Dir, registered, imds, plot_statas, mp2, false); %任意のplotした点のten画像とregisterのafin変換を行う
 
-[registered] = transformation_matrix(result_Dir, registered, imds, plot_statas, mp2); %任意のplotした点のten画像とregisterのafin変換を行う
+imwrite(registered,"afin.png");
+
+% [registered] = transformation_matrix(result_Dir, registered, imds, plot_statas, mp2); %任意のplotした点のten画像とregisterのafin変換を行う
 

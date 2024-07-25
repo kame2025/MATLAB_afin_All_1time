@@ -4,13 +4,13 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
 
     Allhairetu = numel(mp2);
     INhairetu = Allhairetu / 2;
-    Ptate = zeros(1,1000); %zeros(1,1000000)これは配列を1～1000000まで事前に作って，処理を高速化させている
-    Pyoko = zeros(1,1000);
-    Tateset = zeros(1,1000);
+    Ptate = zeros(1,500); %zeros(1,1000000)これは配列を1～1000000まで事前に作って，処理を高速化させている
+    Pyoko = zeros(1,500);
+    Tateset = zeros(1,500);
     saitei = 5; %mp2(5,1),mp2(5,1)から下のものを測定する
-    Alllenstate = zeros(1,1000);
-    lenstate = zeros(1,1000);
-    lensyoko = zeros(1,1000);
+    Alllenstate = zeros(1,500);
+    lenstate = zeros(1,500);
+    lensyoko = zeros(1,500);
     plot_statas = {};
 
     tate = mp2(3,2) - mp2(1,2); %縦の長さの中にa=333.91=7680
@@ -51,43 +51,65 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
             lensyoko(i) = round((yLenskosuu * Pyoko(i)) / yoko); %img1(188)のlensの位置を測定
         end
     end
-
+    assignin('base', 'lenstate', lenstate);
+    assignin('base', 'lensyoko', lensyoko);
     %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~抽出した点にplot
     ee = 0;
 
-    for i = 1:INhairetu
-            a = 0;
-            b = 0;
-        if Tateset(i) == 0 % 偶数
-            for x = pix2:pix:y_axis
-                for y = pix2:pix:x_axis
-                    if a == lenstate(i) && b == lensyoko(i)
-                        IMG(x, y, 1) = 255; % (縦,横,1 or 2 or 3)
-                        b = b + 1; 
+    for i=1:1:INhairetu
+        if Tateset(i) == 0 %~=0は赤点で示した場所
+            a=0;
+            b=0;
+            for x=pix2:pix:y_axis %赤点のほう
+                if a ~= lenstate(i)
+                    for y=pix2:pix:x_axis
+                    end
+                else
+                    for y=pix2:pix:x_axis
+                        if b ~= lensyoko(i)
+                        else                            
+                            IMG(x,y,1)=255; %(縦,横,1 or 2 or 3)
+                        end  
+                        b=b+1;
                     end
                 end
-                a = a + 1;
+                a=a+1;
             end
-
-        else % 奇数  
-            for x = pix:pix:y_axis
-                for y = pix:pix:x_axis
-                    if a == lenstate(i) && b == lensyoko(i)
-                        IMG(x, y, 1) = 255; %(縦,横,1 or 2 or 3)
-                        b = b + 1;    
+            for x=pix:pix:y_axis
+                for y=pix:pix:x_axis
+                end
+            end
+        else
+            a=0;
+            b=0;
+            for x=pix2:pix:y_axis
+                for y=pix2:pix:x_axis
+                end
+            end    
+            for x=pix:pix:y_axis
+                if a ~= lenstate(i)
+                    for y=pix:pix:x_axis
+                    end
+                else
+                    for y=pix:pix:x_axis
+                        if b ~= lensyoko(i)
+                        else
+                            IMG(x,y,1)=255; %(縦,横,1 or 2 or 3)
+                        end  
+                        b=b+1;
                     end
                 end
-                a = a + 1;
+                a=a+1;
             end
         end
-        ee = ee + 1;
+        ee=ee+1;
     end
 
-    [subpixelRedCoordinates] = getSubpixelCoordinates(IMG);
+    [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,false);
     
     % 拡大後の座標を計算
-    scaleFactor = magnification;
-    newSubpixelRedCoordinates = subpixelRedCoordinates * scaleFactor;
+    newSubpixelRedCoordinates = subpixelRedCoordinates * magnification;
+
     % 画像を保存
     L = imresize(IMG, magnification);   % 23の時333.91に対し、23.3626の時は328.73のため、23.3626似合わせようとすると、0.984倍する
     L1 = imcrop(L, [0 0 4320 7680]); % ↑1.007は縦がいい感じ(a=333c=187の時) 1.02

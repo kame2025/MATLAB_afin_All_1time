@@ -45,7 +45,7 @@ function ten_main(baseDir, xlens, ylens, magnification, IMG, pix, pix2, tate, yo
     end
     a
 
-    [subpixelRedCoordinates] = getSubpixelCoordinates(IMG);
+    [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,true);
 
     % 拡大後の座標を計算
     scaleFactor = magnification;

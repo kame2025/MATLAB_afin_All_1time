@@ -1,4 +1,4 @@
-function [subpixelRedCoordinates] = getSubpixelCoordinates(K)
+function [subpixelRedCoordinates] = getSubpixelCoordinates(K, flag)
     % 赤色のピクセル座標を取得
     [redRows, redCols] = find(K(:,:,1) == 255 & K(:,:,2) == 0 & K(:,:,3) == 0);
     redCoordinates = [redRows, redCols];
@@ -23,7 +23,7 @@ function [subpixelRedCoordinates] = getSubpixelCoordinates(K)
     end
 
     % replacement関数を使用して入れ替え
-    subpixelRedCoordinates = replacement(subpixelRedCoordinates);
+    subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag);
 end
 
 function [xSubpixel, ySubpixel] = subpixelPosition(channel, row, col)
@@ -45,13 +45,37 @@ function [xSubpixel, ySubpixel] = subpixelPosition(channel, row, col)
     end
 end
 
-function subpixelRedCoordinates = replacement(subpixelRedCoordinates)
+function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
     % 全ての座標の1列目と2列目を入れ替える
     subpixelRedCoordinates = subpixelRedCoordinates(:, [2, 1]);
+    
+    % 配列のサイズが少なくとも3行あることを確認
+    if size(subpixelRedCoordinates, 1) < 3
+        warning('subpixelRedCoordinates の行数が少なすぎます。処理をスキップします。');
+        return;
+    end
+    
     % 行の入れ替え
-    if size(subpixelRedCoordinates, 1) >= 3
-        sub = subpixelRedCoordinates(3,:);
-        subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
-        subpixelRedCoordinates(2,:) = sub;
+    if flag
+        if size(subpixelRedCoordinates, 1) >= 3
+            sub = subpixelRedCoordinates(3,:);
+            subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
+            subpixelRedCoordinates(2,:) = sub;
+        end
+    else
+        sub = []; % subの初期化
+        for i = 1:size(subpixelRedCoordinates, 1)
+            if subpixelRedCoordinates(i, 1) > 4000
+                sub = [sub; subpixelRedCoordinates(i, :)]; 
+                assignin('base', 'sub', sub);
+            end
+            if 2 < i && i < size(subpixelRedCoordinates, 1) - 2 
+                correct = i + 2;
+                subpixelRedCoordinates(correct, :) = subpixelRedCoordinates(i, :);
+%             elseif size(subpixelRedCoordinates, 1) - 2 < i && size(sub, 1) >= 2
+%                 subpixelRedCoordinates(3, :) = sub(1, :);
+%                 subpixelRedCoordinates(4, :) = sub(2, :);
+            end
+        end
     end
 end
