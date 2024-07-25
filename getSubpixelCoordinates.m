@@ -63,19 +63,15 @@ function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
             subpixelRedCoordinates(2,:) = sub;
         end
     else
-        sub = []; % subの初期化
-        for i = 1:size(subpixelRedCoordinates, 1)
-            if subpixelRedCoordinates(i, 1) > 4000
-                sub = [sub; subpixelRedCoordinates(i, :)]; 
-                assignin('base', 'sub', sub);
-            end
-            if 2 < i && i < size(subpixelRedCoordinates, 1) - 2 
-                correct = i + 2;
-                subpixelRedCoordinates(correct, :) = subpixelRedCoordinates(i, :);
-%             elseif size(subpixelRedCoordinates, 1) - 2 < i && size(sub, 1) >= 2
-%                 subpixelRedCoordinates(3, :) = sub(1, :);
-%                 subpixelRedCoordinates(4, :) = sub(2, :);
-            end
+        numPoints = size(subpixelRedCoordinates, 1);
+        
+        % 最後の2つの赤点を3番目と4番目に移動
+        for i = 1:2
+            lastIdx = numPoints - (i - 1);
+            targetIdx = 3 + (i - 1);
+            % 赤点を挿入し、それ以降の点を2つずつずらす
+            subpixelRedCoordinates(targetIdx+2:numPoints, :) = subpixelRedCoordinates(targetIdx:numPoints-2, :);
+            subpixelRedCoordinates(targetIdx, :) = subpixelRedCoordinates(lastIdx, :);
         end
     end
 end
