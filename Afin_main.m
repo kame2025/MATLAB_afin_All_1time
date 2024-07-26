@@ -30,28 +30,13 @@ ten_main(result_Dir, xlens, ylens, magnification, IMG, pix, pix2, y_axis, x_axis
 [imds, ten, plot_statas] = load_photo(result_Dir, xlens, ylens, magnification, true); %ten = img1
 
 % 変換行列の導出
-% [mp, fp] = cpselect(J2, ten, 'Wait', true);
-mp = [818.000000000000	1029
-4240	1034
-832.000000000000	6987
-4258	6995];
+[mp, fp] = cpselect(J2, ten, 'Wait', true);
 1
 % transformation_matrix関数を呼び出し
 [registered] = transformation_matrix(result_Dir, J2, imds, plot_statas, mp, true);
 2
-% [mp, fp] = cpselect(registered, ten, 'Wait', true);
-mp2 = [1065	1338
-5466	1335
-1069	9009
-5465	9010
-3366	4207
-4150	4194
-3134	4816
-4172	4779
-3260	5322
-4406	5200
-3260	5950
-4416	5890.00000000000];
+[mp, fp] = cpselect(registered, ten, 'Wait', true);
+
 ten_Multipul(mp2, result_Dir,IMG ,xlens, ylens, magnification,pix, pix2, y_axis, x_axis) %任意のplotした点のten画像を作成
 3
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~再度抽出，５点目以降を修正
