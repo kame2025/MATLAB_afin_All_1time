@@ -48,7 +48,7 @@ end
 function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
     % 全ての座標の1列目と2列目を入れ替える
     subpixelRedCoordinates = subpixelRedCoordinates(:, [2, 1]);
-        
+    %     
     % 行の入れ替え
     if flag
         if size(subpixelRedCoordinates, 1) >= 3
@@ -77,5 +77,6 @@ function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
             subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
             subpixelRedCoordinates(2,:) = sub;
         end
+        %~~~~~~~~~~~~~~~~~~~~~~~~4個目まではきれいに出力できるようになった  以下はどうやって順番通りにしていくか
     end
 end
