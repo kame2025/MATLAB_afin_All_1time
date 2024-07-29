@@ -72,5 +72,11 @@ function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
             subpixelRedCoordinates(3, :) = lastPoint2;
             subpixelRedCoordinates(4, :) = lastPoint1;
         end
+        if size(subpixelRedCoordinates, 1) >= 3
+            sub = subpixelRedCoordinates(3,:);
+            subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
+            subpixelRedCoordinates(2,:) = sub;
+        end
+        %~~~~~~~~~~~~~~~~~~~~~~~~4個目まではきれいに出力できるようになった  以下はどうやって順番通りにしていくか
     end
 end

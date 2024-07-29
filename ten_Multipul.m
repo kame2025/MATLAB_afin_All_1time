@@ -81,7 +81,7 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
             end
         else
             a=0;
-            b=0;
+            b=1;
             for x=pix2:pix:y_axis
                 for y=pix2:pix:x_axis
                 end

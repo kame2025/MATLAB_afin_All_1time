@@ -30,12 +30,52 @@ ten_main(result_Dir, xlens, ylens, magnification, IMG, pix, pix2, y_axis, x_axis
 [imds, ten, plot_statas] = load_photo(result_Dir, xlens, ylens, magnification, true); %ten = img1
 
 % 変換行列の導出
-[mp, fp] = cpselect(J2, ten, 'Wait', true);
+% [mp, fp] = cpselect(J2, ten, 'Wait', true);
+mp = [818.000000000000	1029
+4240	1034
+832.000000000000	6987
+4258	6995];
 1
+mp_length = length(mp);
+
 % transformation_matrix関数を呼び出し
-[registered] = transformation_matrix(result_Dir, J2, imds, plot_statas, mp, true);
+[registered] = transformation_matrix(result_Dir, J2, imds, plot_statas, mp, true, mp_length);
 2
-[mp, fp] = cpselect(registered, ten, 'Wait', true);
+% [mp2, fp] = cpselect(registered, ten, 'Wait', true);
+mp2 = [1069.75000000000	1330.25000000000
+5469.75000000000	1332.75000000000
+1070.25000000000	9005.25000000000
+5470.25000000000	9006.25000000000
+3047.00000000000	3734
+3637	3579.00000000000
+4058	3675.00000000000
+4675	3663.00000000000
+3371	4201
+3710	4166
+4166	4177
+4585.50000000000	4176
+2966.00000000000	4519.00000000000
+3547	4589
+4107	4586
+4481	4586.00000000000
+3033.00000000000	4988
+3522	4939
+3897	4963
+4363	4985.00000000000
+3254	5327.00000000000
+3675	5300.00000000000
+3954.00000000000	5253
+4409	5241
+3183.00000000000	5771
+3628.00000000000	5769
+4058.00000000000	5827
+4457	5826
+2918	6231
+3440.00000000000	6236
+4022	6236
+4619	6222];
+
+mp_length = length(mp2)
 
 ten_Multipul(mp2, result_Dir,IMG ,xlens, ylens, magnification,pix, pix2, y_axis, x_axis) %任意のplotした点のten画像を作成
 3
@@ -43,7 +83,7 @@ ten_Multipul(mp2, result_Dir,IMG ,xlens, ylens, magnification,pix, pix2, y_axis,
 % load_photo関数を呼び出し
 [imds, ten, plot_statas] = load_photo(result_Dir, xlens, ylens, magnification, false); %任意のplotした点のten画像の読み込み
 4
-[registered] = transformation_matrix(result_Dir, registered, imds, plot_statas, mp2, false); %任意のplotした点のten画像とregisterのafin変換を行う
+[registered] = transformation_matrix(result_Dir, registered, imds, plot_statas, mp2, false, mp_length); %任意のplotした点のten画像とregisterのafin変換を行う
 
 imwrite(registered,"afin.png");
 

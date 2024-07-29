@@ -1,4 +1,4 @@
-function [registered] = transformation_matrix(imageFolder, J2, imds, plot_statas, mp, flag)
+function [registered] = transformation_matrix(imageFolder, J2, imds, plot_statas, mp, flag, mp_length)
     while hasdata(imds)
         [img, info] = read(imds);
         
@@ -10,7 +10,7 @@ function [registered] = transformation_matrix(imageFolder, J2, imds, plot_statas
         if flag
             % ファイル名に注意して保存
             [~, name, ext] = fileparts(info.Filename);
-            outputFile = fullfile(imageFolder, sprintf('afin_%s%s', name, ext));
+            outputFile = fullfile(imageFolder, sprintf('afin_%s_%d%s', name, mp_length, ext));
             imwrite(registered, outputFile);
             5
         end
