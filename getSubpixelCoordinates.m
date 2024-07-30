@@ -1,8 +1,8 @@
-function [subpixelRedCoordinates] = getSubpixelCoordinates(K, flag)
+function [subpixelRedCoordinates] = getSubpixelCoordinates(K, flag, kaisuu)
     % 赤色のピクセル座標を取得
     [redRows, redCols] = find(K(:,:,1) == 255 & K(:,:,2) == 0 & K(:,:,3) == 0);
     redCoordinates = [redRows, redCols];
-    
+    assignin('base', 'redCoordinates', redCoordinates);
     % サブピクセル精度の座標を取得
     subpixelRedCoordinates = zeros(size(redCoordinates));
     
@@ -21,9 +21,10 @@ function [subpixelRedCoordinates] = getSubpixelCoordinates(K, flag)
             subpixelRedCoordinates(i, :) = [row, col];
         end
     end
-
+    
     % replacement関数を使用して入れ替え
-    subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag);
+    subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag, kaisuu);
+    
 end
 
 function [xSubpixel, ySubpixel] = subpixelPosition(channel, row, col)
@@ -45,10 +46,9 @@ function [xSubpixel, ySubpixel] = subpixelPosition(channel, row, col)
     end
 end
 
-function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
+function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag, kaisuu)
     % 全ての座標の1列目と2列目を入れ替える
-    subpixelRedCoordinates = subpixelRedCoordinates(:, [2, 1]);
-    %     
+    subpixelRedCoordinates = subpixelRedCoordinates(:, [2, 1]);    
     % 行の入れ替え
     if flag
         if size(subpixelRedCoordinates, 1) >= 3
@@ -60,13 +60,10 @@ function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag)
         numPoints = size(subpixelRedCoordinates, 1);
         
         % 最後の2つの赤点を3番目と4番目に移動
-        if numPoints >= 4
+        if numPoints > 4
             % 最後の2つの点を取得
             lastPoint1 = subpixelRedCoordinates(end, :);
             lastPoint2 = subpixelRedCoordinates(end-1, :);
-
-            % 移動する部分をスライド
-            subpixelRedCoordinates(5:end, :) = subpixelRedCoordinates(3:end-2, :);
 
             % 3番目と4番目に移動
             subpixelRedCoordinates(3, :) = lastPoint2;

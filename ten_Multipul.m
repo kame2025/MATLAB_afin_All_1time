@@ -53,6 +53,8 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
     end
     assignin('base', 'lenstate', lenstate);
     assignin('base', 'lensyoko', lensyoko);
+    assignin('base', 'Ptate', Ptate);
+    assignin('base', 'Pyoko', Pyoko);
     %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~抽出した点にplot
     ee = 0;
 
@@ -61,40 +63,26 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
             a=0;
             b=0;
             for x=pix2:pix:y_axis %赤点のほう
-                if a ~= lenstate(i)
+                if a == lenstate(i)
                     for y=pix2:pix:x_axis
-                    end
-                else
-                    for y=pix2:pix:x_axis
-                        if b ~= lensyoko(i)
-                        else                            
+                        if b == lensyoko(i)                          
                             IMG(x,y,1)=255; %(縦,横,1 or 2 or 3)
+                            [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,false,INhairetu);
                         end  
                         b=b+1;
                     end
                 end
                 a=a+1;
             end
-            for x=pix:pix:y_axis
-                for y=pix:pix:x_axis
-                end
-            end
         else
             a=0;
-            b=1;
-            for x=pix2:pix:y_axis
-                for y=pix2:pix:x_axis
-                end
-            end    
+            b=1; %なぜ１なの？！  
             for x=pix:pix:y_axis
-                if a ~= lenstate(i)
+                if a == lenstate(i)
                     for y=pix:pix:x_axis
-                    end
-                else
-                    for y=pix:pix:x_axis
-                        if b ~= lensyoko(i)
-                        else
+                        if b == lensyoko(i)
                             IMG(x,y,1)=255; %(縦,横,1 or 2 or 3)
+                            [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,false,INhairetu);
                         end  
                         b=b+1;
                     end
@@ -102,14 +90,11 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
                 a=a+1;
             end
         end
-        ee=ee+1;
     end
-
-    [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,false);
     
     % 拡大後の座標を計算
     newSubpixelRedCoordinates = subpixelRedCoordinates * magnification;
-
+    assignin('base', 'subpixelRedCoordinates', subpixelRedCoordinates);
     % 画像を保存
     L = imresize(IMG, magnification);   % 23の時333.91に対し、23.3626の時は328.73のため、23.3626似合わせようとすると、0.984倍する
     L1 = imcrop(L, [0 0 4320 7680]); % ↑1.007は縦がいい感じ(a=333c=187の時) 1.02
