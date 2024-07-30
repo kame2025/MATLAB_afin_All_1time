@@ -55,69 +55,60 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
     assignin('base', 'lensyoko', lensyoko);
     assignin('base', 'Ptate', Ptate);
     assignin('base', 'Pyoko', Pyoko);
-    %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~抽出した点にplot
+       %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~抽出した点にplot
     ee = 0;
 
-    subpixelRedCoordinates = [];
-    pixsubstituition = [];
-    for i = 1:INhairetu
+    for i=1:1:INhairetu
         if Tateset(i) == 0 %~=0は赤点で示した場所
-            a = 0;
-            b = 0;
-            for x = pix2:pix:y_axis %赤点のほう
+            a=0;
+            b=0;
+            for x=pix2:pix:y_axis %赤点のほう
                 if a ~= lenstate(i)
-                    for y = pix2:pix:x_axis
-                        % 処理しない
+                    for y=pix2:pix:x_axis
                     end
                 else
-                    for y = pix2:pix:x_axis
+                    for y=pix2:pix:x_axis
                         if b ~= lensyoko(i)
-                            % 処理しない
-                        else
-                            IMG(x, y, 1) = 255; %(縦,横,1 or 2 or 3)
-                            [newCoords] = getSubpixelCoordinates(IMG, false);
-                            pixsubstituition = newCoords;
-                        end
-                        b = b + 1;
+                        else                            
+                            IMG(x,y,1)=255; %(縦,横,1 or 2 or 3)
+                        end  
+                        b=b+1;
                     end
                 end
-                a = a + 1;
+                a=a+1;
+            end
+            for x=pix:pix:y_axis
+                for y=pix:pix:x_axis
+                end
             end
         else
-            a = 0;
-            b = 1;
-            for x = pix2:pix:y_axis
-                for y = pix2:pix:x_axis
-                    % 処理しない
+            a=0;
+            b=1;
+            for x=pix2:pix:y_axis
+                for y=pix2:pix:x_axis
                 end
-            end
-            for x = pix:pix:y_axis
+            end    
+            for x=pix:pix:y_axis
                 if a ~= lenstate(i)
-                    for y = pix:pix:x_axis
-                        % 処理しない
+                    for y=pix:pix:x_axis
                     end
                 else
-                    for y = pix:pix:x_axis
+                    for y=pix:pix:x_axis
                         if b ~= lensyoko(i)
-                            % 処理しない
                         else
-                            IMG(x, y, 1) = 255; %(縦,横,1 or 2 or 3)
-                            [newCoords] = getSubpixelCoordinates(IMG, false);
-                            pixsubstituition = newCoords;
-                            
-                        end
-                        b = b + 1;
+                            IMG(x,y,1)=255; %(縦,横,1 or 2 or 3)
+                        end  
+                        b=b+1;
                     end
                 end
-                a = a + 1;
+                a=a+1;
             end
         end
-        ee = ee + 1;
+        ee=ee+1;
     end
-    assignin('base', 'pixsubstituition', pixsubstituition);
-    for i = 1:INhairetu
-        subpixelRedCoordinates = pixsubstituition(i); % Enqueue
-    end
+
+    [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,false);
+ 
     assignin('base', 'subpixelRedCoordinates', subpixelRedCoordinates);
     % 順序を維持したままのサブピクセル精度の座標
     newSubpixelRedCoordinates = subpixelRedCoordinates * magnification;
