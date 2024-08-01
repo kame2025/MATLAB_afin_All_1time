@@ -56,24 +56,24 @@ function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag, kais
             subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
             subpixelRedCoordinates(2,:) = sub;
         end
-    else
-        numPoints = size(subpixelRedCoordinates, 1);
-        
-        % 最後の2つの赤点を3番目と4番目に移動
-        if numPoints > 4
-            % 最後の2つの点を取得
-            lastPoint1 = subpixelRedCoordinates(end, :);
-            lastPoint2 = subpixelRedCoordinates(end-1, :);
-
-            % 3番目と4番目に移動
-            subpixelRedCoordinates(3, :) = lastPoint2;
-            subpixelRedCoordinates(4, :) = lastPoint1;
-        end
-        if size(subpixelRedCoordinates, 1) >= 3
-            sub = subpixelRedCoordinates(3,:);
-            subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
-            subpixelRedCoordinates(2,:) = sub;
-        end
+%     else
+%         numPoints = size(subpixelRedCoordinates, 1);
+%         
+%         % 最後の2つの赤点を3番目と4番目に移動
+%         if numPoints > 4
+%             % 最後の2つの点を取得
+%             lastPoint1 = subpixelRedCoordinates(end, :);
+%             lastPoint2 = subpixelRedCoordinates(end-1, :);
+% 
+%             % 3番目と4番目に移動
+%             subpixelRedCoordinates(3, :) = lastPoint2;
+%             subpixelRedCoordinates(4, :) = lastPoint1;
+%         end
+%         if size(subpixelRedCoordinates, 1) >= 3
+%             sub = subpixelRedCoordinates(3,:);
+%             subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
+%             subpixelRedCoordinates(2,:) = sub;
+%         end
         %~~~~~~~~~~~~~~~~~~~~~~~~4個目まではきれいに出力できるようになった  以下はどうやって順番通りにしていくか
     end
 end

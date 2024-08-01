@@ -56,8 +56,9 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
     assignin('base', 'Ptate', Ptate);
     assignin('base', 'Pyoko', Pyoko);
     %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~抽出した点にplot
-    ee = 0;
-
+    ee = 1;
+    kaigyou = [];
+    first = [];
     for i=1:1:INhairetu
         if Tateset(i) == 0 %~=0は赤点で示した場所
             a=0;
@@ -68,6 +69,16 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
                         if b == lensyoko(i)                          
                             IMG(x,y,1)=255; %(縦,横,1 or 2 or 3)
                             [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,false,INhairetu);
+                            if i <= 2 || i >= INhairetu - 1
+                                first = subpixelRedCoordinates;
+                            else
+                                if rem(INhairetu,4) ~= 2
+                                    kaigyou = subpixelRedCoordinates;
+                                else
+                                    ee = ee + 1;
+                                    kaigyou = subpixelRedCoordinates;
+                                end
+                            end
                         end  
                         b=b+1;
                     end
@@ -83,6 +94,16 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
                         if b == lensyoko(i)
                             IMG(x,y,1)=255; %(縦,横,1 or 2 or 3)
                             [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,false,INhairetu);
+                            if i <= 2 || i >= INhairetu - 1
+                                first = subpixelRedCoordinates;
+                            else
+                                if rem(INhairetu,4) ~= 2
+                                    kaigyou = subpixelRedCoordinates;
+                                else
+                                    ee = ee + 1;
+                                    kaigyou = subpixelRedCoordinates;
+                                end
+                            end
                         end  
                         b=b+1;
                     end
@@ -91,8 +112,15 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
             end
         end
     end
+    assignin('base', 'first', first);
+    assignin('base', 'kaigyou', kaigyou);
+    assignin('base', 'subpixelRedCoordinates', subpixelRedCoordinates);
 
-    
+    for i = 1:size(subpixelRedCoordinates)
+        if size(subpixelRedCoordinates) ~= INhairetu
+            subpixelRedCoordinates(1,:) = [];
+        end
+    end
     
     % 拡大後の座標を計算
     newSubpixelRedCoordinates = subpixelRedCoordinates * magnification;
