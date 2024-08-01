@@ -91,6 +91,8 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
             end
         end
     end
+
+    
     
     % 拡大後の座標を計算
     newSubpixelRedCoordinates = subpixelRedCoordinates * magnification;
