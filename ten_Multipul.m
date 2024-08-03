@@ -75,16 +75,7 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
                                 coordinateIndex = coordinateIndex + 1; % インデックスを更新
                                 subpixelRedCoordinates = [subpixelRedCoordinates; newCoordinate];
                             end
-                            if i <= 2 || i >= INhairetu - 1
-                                first = subpixelRedCoordinates;
-                            else
-                                if rem(INhairetu, 4) ~= 2
-                                    kaigyou = subpixelRedCoordinates;
-                                else
-                                    ee = ee + 1;
-                                    kaigyou = subpixelRedCoordinates;
-                                end
-                            end
+                            
                         end  
                         b = b + 1;
                     end
@@ -105,16 +96,6 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
                                 fprintf('Red Coordinate Detected %d: (%.2f, %.2f)\n', coordinateIndex, newCoordinate(1), newCoordinate(2));
                                 coordinateIndex = coordinateIndex + 1; % インデックスを更新
                                 subpixelRedCoordinates = [subpixelRedCoordinates; newCoordinate];
-                            end
-                            if i <= 2 || i >= INhairetu - 1
-                                first = subpixelRedCoordinates;
-                            else
-                                if rem(INhairetu, 4) ~= 2
-                                    kaigyou = subpixelRedCoordinates;
-                                else
-                                    ee = ee + 1;
-                                    kaigyou = subpixelRedCoordinates;
-                                end
                             end
                         end  
                         b = b + 1;

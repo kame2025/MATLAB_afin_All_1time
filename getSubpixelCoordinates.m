@@ -1,16 +1,16 @@
 function [subpixelRedCoordinates] = getSubpixelCoordinates(K, flag, kaisuu)
     % 赤色のピクセル座標を取得
     [redRows, redCols] = find(K(:,:,1) == 255 & K(:,:,2) == 0 & K(:,:,3) == 0);
-    redCoordinates = unique([redRows, redCols], 'rows'); % 重複を排除
+    redCoordinates = [redRows, redCols];
     assignin('base', 'redCoordinates', redCoordinates);
 
     % サブピクセル精度の座標を取得
     subpixelRedCoordinates = [];
     
-    for i = 1:size(redCoordinates, 1)
+    for i = 1:length(redRows)
         % ピクセル近傍のサブピクセル精度の値を補間
-        row = redCoordinates(i, 1);
-        col = redCoordinates(i, 2);
+        row = redRows(i);
+        col = redCols(i);
         
         % 境界チェックを追加
         if row < size(K, 1) && col < size(K, 2)
@@ -22,7 +22,7 @@ function [subpixelRedCoordinates] = getSubpixelCoordinates(K, flag, kaisuu)
             newCoordinate = [row, col];
         end
 
-        % 新しい座標を追加
+        % 新しい座標を追加  どうにかしよ
         subpixelRedCoordinates = [subpixelRedCoordinates; newCoordinate];
 
         % 新しい座標を表示
@@ -69,15 +69,15 @@ function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag, kais
         numPoints = size(subpixelRedCoordinates, 1);
         
         % 最後の2つの赤点を3番目と4番目に移動
-        if numPoints > 4
-            % 最後の2つの点を取得
-            lastPoint1 = subpixelRedCoordinates(end, :);
-            lastPoint2 = subpixelRedCoordinates(end-1, :);
-
-            % 3番目と4番目に移動
-            subpixelRedCoordinates(3, :) = lastPoint2;
-            subpixelRedCoordinates(4, :) = lastPoint1;
-        end
+%         if numPoints > 4
+%             % 最後の2つの点を取得
+%             lastPoint1 = subpixelRedCoordinates(end, :);
+%             lastPoint2 = subpixelRedCoordinates(end-1, :);
+% 
+%             % 3番目と4番目に移動
+%             subpixelRedCoordinates(3, :) = lastPoint2;
+%             subpixelRedCoordinates(4, :) = lastPoint1;
+%         end
         if size(subpixelRedCoordinates, 1) == kaisuu
             sub = subpixelRedCoordinates(3,:);
             subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
