@@ -68,14 +68,10 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
                     for y = pix2:pix:x_axis
                         if b == lensyoko(i)                          
                             IMG(x, y, 1) = 255; % (縦,横,1 or 2 or 3)
-                            [newCoordinate] = getSingleRedCoordinate(IMG, x, y);
-                            if ~isempty(newCoordinate)
-                                % 新しい座標を表示
-                                fprintf('Red Coordinate Detected %d: (%.2f, %.2f)\n', coordinateIndex, newCoordinate(1), newCoordinate(2));
-                                coordinateIndex = coordinateIndex + 1; % インデックスを更新
-                                subpixelRedCoordinates = [subpixelRedCoordinates; newCoordinate];
-                            end
-                            
+                            % 新しい座標を追加
+                            subpixelRedCoordinates = [subpixelRedCoordinates; x, y];
+                            fprintf('Red Coordinate Detected %d: (%d, %d)\n', coordinateIndex, x, y); % 座標を表示
+                            coordinateIndex = coordinateIndex + 1; % インデックスを更新
                         end  
                         b = b + 1;
                     end
@@ -90,13 +86,10 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
                     for y = pix:pix:x_axis
                         if b == lensyoko(i)
                             IMG(x, y, 1) = 255; % (縦,横,1 or 2 or 3)
-                            [newCoordinate] = getSingleRedCoordinate(IMG, x, y);
-                            if ~isempty(newCoordinate)
-                                % 新しい座標を表示
-                                fprintf('Red Coordinate Detected %d: (%.2f, %.2f)\n', coordinateIndex, newCoordinate(1), newCoordinate(2));
-                                coordinateIndex = coordinateIndex + 1; % インデックスを更新
-                                subpixelRedCoordinates = [subpixelRedCoordinates; newCoordinate];
-                            end
+                            % 新しい座標を追加
+                            subpixelRedCoordinates = [subpixelRedCoordinates; x, y];
+                            fprintf('Red Coordinate Detected %d: (%d, %d)\n', coordinateIndex, x, y); % 座標を表示
+                            coordinateIndex = coordinateIndex + 1; % インデックスを更新
                         end  
                         b = b + 1;
                     end
@@ -124,13 +117,4 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
 
     % 座標を保存して次のスクリプトで使用
     save(fullfile(imageFolder, 'second_coordinates.mat'), 'plot_statas');
-end
-
-function [newCoordinate] = getSingleRedCoordinate(IMG, x, y)
-    if IMG(x, y, 1) == 255 && IMG(x, y, 2) == 0 && IMG(x, y, 3) == 0
-        [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,false,1);
-        newCoordinate = subpixelRedCoordinates(end, :);
-    else
-        newCoordinate = [];
-    end
 end
