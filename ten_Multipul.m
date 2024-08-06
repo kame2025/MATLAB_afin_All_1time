@@ -99,12 +99,22 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
         end
     end
 
+    time = 0;
+    % 新しいループを追加して、5番目からの処理を行う
+    subpixelRedCoordinatesSorted = subpixelRedCoordinates;
+    for i = 5:4:size(subpixelRedCoordinates, 1)
+        endIndex = min(i+3, size(subpixelRedCoordinates, 1));
+        subpixelRedCoordinatesSorted(i:endIndex, :) = sortrows(subpixelRedCoordinates(i:endIndex, :), 1);
+    end
+    assignin('base', 'time', time);
+     
+
     % 検出された赤点の数
-    numPoints = size(subpixelRedCoordinates, 1);
+    numPoints = size(subpixelRedCoordinatesSorted, 1);
 
     % 順序を維持したままのサブピクセル精度の座標
-    newSubpixelRedCoordinates = subpixelRedCoordinates * magnification;
-    assignin('base', 'subpixelRedCoordinates', subpixelRedCoordinates);
+    newSubpixelRedCoordinates = subpixelRedCoordinatesSorted * magnification;
+    assignin('base', 'subpixelRedCoordinates', subpixelRedCoordinatesSorted);
 
     % 画像を保存
     L = imresize(IMG, magnification);   % 23の時333.91に対し、23.3626の時は328.73のため、23.3626似合わせようとすると、0.984倍する
