@@ -24,15 +24,17 @@ function [subpixelRedCoordinates] = getSubpixelCoordinates(K, flag, kaisuu)
 
         % 新しい座標を追加
         subpixelRedCoordinates = [subpixelRedCoordinates; newCoordinate];
-
         % 新しい座標を表示
         fprintf('Subpixel Red Coordinate %d: (%.2f, %.2f)\n', i, newCoordinate(1), newCoordinate(2));
     end
 
+    subpixelRedCoordinates = subpixelRedCoordinates(:, [2, 1]); % 1列目と2列目を入れ替える
+
     % 入れ替え処理を行う場合
-    if flag
-        subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag, kaisuu);
-    end
+    subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag, kaisuu);
+
+    % ワークスペースに補間結果を保存
+    assignin('base', 'subpixelRedCoordinates', subpixelRedCoordinates);
 end
 
 function [xSubpixel, ySubpixel] = subpixelPosition(channel, row, col)
@@ -46,8 +48,18 @@ function [xSubpixel, ySubpixel] = subpixelPosition(channel, row, col)
         f11 = double(channel(row+1, col+1));
 
         % xとyのサブピクセル位置を決定
-        xSubpixel = row + (f10 - f00) / (f10 + f00 + f11 + f01);
-        ySubpixel = col + (f01 - f00) / (f01 + f00 + f11 + f10);
+        denominatorX = (f10 - f00 + f11 - f01);
+        denominatorY = (f01 - f00 + f11 - f10);
+        if denominatorX ~= 0
+            xSubpixel = row + (f10 - f00) / denominatorX;
+        else
+            xSubpixel = row;
+        end
+        if denominatorY ~= 0
+            ySubpixel = col + (f01 - f00) / denominatorY;
+        else
+            ySubpixel = col;
+        end
     else
         xSubpixel = row;
         ySubpixel = col;
@@ -55,33 +67,29 @@ function [xSubpixel, ySubpixel] = subpixelPosition(channel, row, col)
 end
 
 function subpixelRedCoordinates = replacement(subpixelRedCoordinates, flag, kaisuu)
-    % 全ての座標の1列目と2列目を入れ替える
-    subpixelRedCoordinates = subpixelRedCoordinates(:, [2, 1]);
-
     % 行の入れ替え
-    if flag
-        if size(subpixelRedCoordinates, 1) >= 3
-            sub = subpixelRedCoordinates(3,:);
-            subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
-            subpixelRedCoordinates(2,:) = sub;
-        end
-    else
-        numPoints = size(subpixelRedCoordinates, 1);
+%     if flag
+%         if size(subpixelRedCoordinates, 1) >= 3
+%             sub = subpixelRedCoordinates(3,:);
+%             subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
+%             subpixelRedCoordinates(2,:) = sub;
+%         end
+%     else
+%         numPoints = size(subpixelRedCoordinates, 1);
         
-        % 最後の2つの赤点を3番目と4番目に移動
-        if numPoints > 4
-            % 最後の2つの点を取得
-            lastPoint1 = subpixelRedCoordinates(end, :);
-            lastPoint2 = subpixelRedCoordinates(end-1, :);
-
-            % 3番目と4番目に移動
-            subpixelRedCoordinates(3, :) = lastPoint2;
-            subpixelRedCoordinates(4, :) = lastPoint1;
-        end
-        if size(subpixelRedCoordinates, 1) == kaisuu
-            sub = subpixelRedCoordinates(3,:);
-            subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
-            subpixelRedCoordinates(2,:) = sub;
-        end
-    end
+%         % 最後の2つの赤点を3番目と4番目に移動
+%         if numPoints > 4
+%             % 最後の2つの点を取得
+%             lastPoint1 = subpixelRedCoordinates(end, :);
+%             lastPoint2 = subpixelRedCoordinates(end-1, :);
+% 
+%             % 3番目と4番目に移動
+%             subpixelRedCoordinates(3, :) = lastPoint2;
+%             subpixelRedCoordinates(4, :) = lastPoint1;
+%         end
+        
+%             sub = subpixelRedCoordinates(3,:);
+%             subpixelRedCoordinates(3,:) = subpixelRedCoordinates(2,:);
+%             subpixelRedCoordinates(2,:) = sub;
+%     end
 end

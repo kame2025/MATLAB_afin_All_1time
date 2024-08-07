@@ -1,15 +1,8 @@
 function [imds, ten, plot_statas] = load_photo(imageFolder, xlens, ylens, magnification, flag)
-    imds = [];
-    ten = [];
-    plot_statas = [];
 
     % 画像処理後のファイルを読み込む
     filePattern = fullfile(imageFolder, '*.png');
     imageFiles = dir(filePattern);
-
-    if isempty(imageFiles)
-        error('No image files found in the specified folder.');
-    end
     
     % 最初のファイルを取得
     imageFile = imageFiles(1);
@@ -32,6 +25,7 @@ function [imds, ten, plot_statas] = load_photo(imageFolder, xlens, ylens, magnif
 
         % 座標を読み込む
         coordinatesFile = fullfile(imageFolder, 'second_coordinates.mat');
+
         load(coordinatesFile, 'plot_statas');
     end
 end

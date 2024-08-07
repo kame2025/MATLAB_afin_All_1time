@@ -48,8 +48,7 @@ function ten_main(baseDir, xlens, ylens, magnification, IMG, pix, pix2, tate, yo
     [subpixelRedCoordinates] = getSubpixelCoordinates(IMG,true,kaisuu);
 
     % 拡大後の座標を計算
-    scaleFactor = magnification;
-    newSubpixelRedCoordinates = subpixelRedCoordinates * scaleFactor;
+    newSubpixelRedCoordinates = subpixelRedCoordinates * magnification;
 
     % 画像を保存
     L = imresize(IMG, magnification);   % 23の時333.91に対し、23.3626の時は328.73のため、23.3626似合わせようとすると、0.984倍する

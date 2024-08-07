@@ -68,6 +68,9 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
                     for y = pix2:pix:x_axis
                         if b == lensyoko(i)                          
                             IMG(x, y, 1) = 255; % (縦,横,1 or 2 or 3)
+                            IMG(x+1, y, 1) = 255; % (縦,横,1 or 2 or 3)
+                            IMG(x, y+1, 1) = 255; % (縦,横,1 or 2 or 3)
+                            IMG(x+1, y+1, 1) = 255; % (縦,横,1 or 2 or 3)
                             % 新しい座標を追加
                             subpixelRedCoordinates = [subpixelRedCoordinates; x, y];
                             fprintf('Red Coordinate Detected %d: (%d, %d)\n', coordinateIndex, x, y); % 座標を表示
@@ -80,12 +83,15 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
             end
         else
             a = 0;
-            b = 1; % なぜ1なの？！  
+            b = 0; % なぜ1なの？！  
             for x = pix:pix:y_axis
                 if a == lenstate(i)
                     for y = pix:pix:x_axis
                         if b == lensyoko(i)
                             IMG(x, y, 1) = 255; % (縦,横,1 or 2 or 3)
+                            IMG(x+1, y, 1) = 255; % (縦,横,1 or 2 or 3)
+                            IMG(x, y+1, 1) = 255; % (縦,横,1 or 2 or 3)
+                            IMG(x+1, y+1, 1) = 255; % (縦,横,1 or 2 or 3)
                             % 新しい座標を追加
                             subpixelRedCoordinates = [subpixelRedCoordinates; x, y];
                             fprintf('Red Coordinate Detected %d: (%d, %d)\n', coordinateIndex, x, y); % 座標を表示
@@ -100,21 +106,19 @@ function ten_Multipul(mp2, imageFolder, IMG, tLenskosuu, yLenskosuu, magnificati
     end
 
     time = 0;
-    % 新しいループを追加して、5番目からの処理を行う
-    subpixelRedCoordinatesSorted = subpixelRedCoordinates;
-    for i = 5:4:size(subpixelRedCoordinates, 1)
-        endIndex = min(i+3, size(subpixelRedCoordinates, 1));
-        subpixelRedCoordinatesSorted(i:endIndex, :) = sortrows(subpixelRedCoordinates(i:endIndex, :), 1);
-    end
-    assignin('base', 'time', time);
-     
+
+    subpixelRedCoordinates = subpixelRedCoordinates(:, [2, 1]);
+        
+%     [getsubpixcel] = getSubpixelCoordinates(IMG,false,1);
+%     assignin('base', 'getsubpixcel', getsubpixcel);
+    assignin('base', 'subpixelRedCoordinates', subpixelRedCoordinates);
 
     % 検出された赤点の数
-    numPoints = size(subpixelRedCoordinatesSorted, 1);
+%     numPoints = size(subpixelRedCoordinates, 1);
 
     % 順序を維持したままのサブピクセル精度の座標
-    newSubpixelRedCoordinates = subpixelRedCoordinatesSorted * magnification;
-    assignin('base', 'subpixelRedCoordinates', subpixelRedCoordinatesSorted);
+    newSubpixelRedCoordinates = subpixelRedCoordinates * magnification;
+    assignin('base', 'newSubpixelRedCoordinates', newSubpixelRedCoordinates);
 
     % 画像を保存
     L = imresize(IMG, magnification);   % 23の時333.91に対し、23.3626の時は328.73のため、23.3626似合わせようとすると、0.984倍する
