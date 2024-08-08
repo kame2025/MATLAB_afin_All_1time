@@ -3,13 +3,14 @@ clc; close all; imtool close all; clear;
 result_Dir = 'C:\Users\SISLa\MATLAB\Projects\afin_All_1time\出力結果\ten';
 
 % 初期設定
-xlens = 329;
-ylens = 188;
-magnification = 1.01739;
+xlens = 328;
+ylens = 187;
+% magnification = 1.01739;
 
 % 画像の読み込みと前処理
 I = imread('IMG_0001.JPG');
 J = imrotate(I, 90);
+
 J2 = imcrop(J, [100 0 4319 7680]); %img2
 IMG = J2;
 IMG(:,:,:) = 0; %色の指定 今だけ入れてる→あとから消すように変更する
@@ -18,6 +19,8 @@ IMG(:,:,:) = 0; %色の指定 今だけ入れてる→あとから消すよう�
 d = 1.5 * sqrt(2); % 12 * 0.0908  
 pix = round((d / 90.80) * 1000); % 白線の線幅を画素数で表現(pix)
 pix2 = round(pix / 2);
+pix3 = (d / 90.80) * 1000; % 白線の線幅を画素数で表現(pix)
+magnification = pix3/pix;
 
 x_axis = 5000; % 横のサイズ184.915675
 y_axis = 8000; % 縦のサイズ328.7389
