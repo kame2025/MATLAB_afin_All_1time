@@ -14,7 +14,7 @@ function [registered] = transformation_matrix(imageFolder, J2, imds, plot_statas
             imwrite(registered, outputFile);
         else
             [~, name, ext] = fileparts(info.Filename);
-            outputFile = fullfile(imageFolder, sprintf('second_afin_%s_%d%s', name, mp_length, ext));
+            outputFile = fullfile(imageFolder, sprintf('%s_%d%s', name, mp_length, ext));
             imwrite(registered, outputFile);
         end
     end
