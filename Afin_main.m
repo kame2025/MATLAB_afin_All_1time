@@ -8,7 +8,7 @@ ylens = 187;
 % magnification = 1.01739;
 
 % 画像の読み込みと前処理
-I = imread('IMG_0001.JPG');
+I = imread('089A9354.JPG');
 J = imrotate(I, 90);
 
 J2 = imcrop(J, [100 0 4319 7680]); %img2
@@ -32,7 +32,13 @@ ten_main(result_Dir, xlens, ylens, magnification, IMG, pix, pix2, y_axis, x_axis
 [imds, ten, plot_statas] = load_photo(result_Dir, xlens, ylens, magnification, true); %ten = img1
 
 % 変換行列の導出
-[mp, fp] = cpselect(J2, ten, 'Wait', true);
+continueRun = true; % ループを続けるフラグ
+while continueRun
+    [x, y] = ginput(1); % 1回クリックで座標を取得
+    mp = [x, y];
+    disp(['Clicked at X: ', num2str(x), ', Y: ', num2str(y)]);
+end
+% [mp, fp] = cpselect(J2, ten, 'Wait', true);
 % mp = [818.250000000000	1028.75000000000
 % 4240.75000000000	1032.25000000000
 % 830.750000000000	6987.25000000000
