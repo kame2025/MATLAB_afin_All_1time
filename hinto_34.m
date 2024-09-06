@@ -1,6 +1,6 @@
 clc; close all; imtool close all; clear;
 
-img = imread('result.png');
+img = imread('IMG_0001.JPG');
 imshow(img);
 axis tight;
 [height, width, ~] = size(img);
