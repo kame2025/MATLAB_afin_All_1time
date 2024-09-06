@@ -3,8 +3,8 @@ clc; close all; imtool close all; clear;
 result_Dir = 'C:\Users\SISLa\MATLAB\Projects\afin_All_1time\出力結果\ten';
 
 % 初期設定
-xlens = 328;
-ylens = 187;
+xlens = 329;
+ylens = 188;
 % magnification = 1.01739;
 
 % 画像の読み込みと前処理
@@ -32,13 +32,7 @@ ten_main(result_Dir, xlens, ylens, magnification, IMG, pix, pix2, y_axis, x_axis
 [imds, ten, plot_statas] = load_photo(result_Dir, xlens, ylens, magnification, true); %ten = img1
 
 % 変換行列の導出
-continueRun = true; % ループを続けるフラグ
-while continueRun
-    [x, y] = ginput(1); % 1回クリックで座標を取得
-    mp = [x, y];
-    disp(['Clicked at X: ', num2str(x), ', Y: ', num2str(y)]);
-end
-% [mp, fp] = cpselect(J2, ten, 'Wait', true);
+[mp, fp] = cpselect(J2, ten, 'Wait', true);
 % mp = [818.250000000000	1028.75000000000
 % 4240.75000000000	1032.25000000000
 % 830.750000000000	6987.25000000000
