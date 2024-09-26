@@ -29,7 +29,7 @@ y_axis = 8000; % 縦のサイズ328.7389
 ten_main(result_Dir, xlens, ylens, magnification, IMG, pix, pix2, y_axis, x_axis);
 
 % load_photo関数を呼び出し
-[imds, ten, plot_statas] = load_photo(result_Dir, xlens, ylens, magnification, true); %ten = img1
+[imds, ten, plot_statas] = load_video(result_Dir, xlens, ylens, magnification, true); %ten = img1
 
 % 変換行列の導出
 % [mp, fp] = cpselect(J2, ten, 'Wait', true);
@@ -77,6 +77,6 @@ ten_Multipul(mp2, result_Dir,IMG ,xlens, ylens, magnification,pix, pix2, y_axis,
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~再度抽出，５点目以降を修正
 % load_photo関数を呼び出し
-[imds, ten, plot_statas] = load_photo(result_Dir, xlens, ylens, magnification, false); %任意のplotした点のten画像の読み込み
+[imds, ten, plot_statas] = load_video(result_Dir, xlens, ylens, magnification, false); %任意のplotした点のten画像の読み込み
 
 [registered] = transformation_matrix(result_Dir, registered, imds, plot_statas, mp2, false, mp_length); %任意のplotした点のten画像とregisterのafin変換を行う
